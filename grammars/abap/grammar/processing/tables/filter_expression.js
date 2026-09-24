@@ -1,0 +1,45 @@
+module.exports = {
+  /**
+   * 1. Basic Form:
+   * ... FILTER type( itab [EXCEPT] [USING KEY keyname]
+   * WHERE c1 op {op f1}|{IS [NOT] INITIAL}
+   * [AND c2 op {op f2}|{IS [NOT] INITIAL} [...]] ) ...
+   *
+   * 2. Filter Table:
+   * ... FILTER type( itab { [EXCEPT] IN ftab [USING KEY keyname]
+   *                       | [USING KEY keyname] [EXCEPT] IN ftab }
+   * WHERE c1 op f1 [AND c2 op f2 [...]] ) ...
+   *
+   * @see https://help.sap.com/doc/abapdocu_latest_index_htm/latest/en-US/ABENCONSTRUCTOR_EXPRESSION_FILTER.html
+   */
+  filter_expression: $ =>
+    seq(
+      gen.kw("filter"),
+      field("result_type", $._constructor_result),
+
+      "(",
+      field("subject", $.expression),
+      choice(
+        seq(
+          optional($.except),
+          optional($.using_key_spec),
+          optional($.in_filter_table_spec),
+        ),
+        seq($.using_key_spec, $.except, $.in_filter_table_spec),
+      ),
+
+      // Technically a special kind of where condition where fields of
+      // both tables are mapped to each other
+      $.where_condition_spec,
+      ")",
+    ),
+
+  in_filter_table_spec: $ =>
+    seq(
+      gen.kw("in"),
+      field("table", $._contextual_expression),
+      optional($.using_key_spec),
+    ),
+
+  except: _ => gen.kw("except"),
+};

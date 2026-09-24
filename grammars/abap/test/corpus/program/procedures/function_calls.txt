@@ -1,0 +1,485 @@
+=================================================================================
+[ ABAP - Calling and Exiting Program Units / Calling Procedures ] Simple method call
+=================================================================================
+lo_object->meth1( ).
+---
+
+(source
+  (function_call
+    source: (identifier)
+    name: (identifier)))
+
+=================================================================================
+[ ABAP - Calling and Exiting Program Units / Calling Procedures ] Static method call
+=================================================================================
+cl_class=>meth1( ).
+---
+
+(source
+  (function_call
+    source: (identifier)
+    name: (identifier)))
+
+=================================================================================
+[ ABAP - Calling and Exiting Program Units / Calling Procedures ] Interface method call
+=================================================================================
+msg->if_message~get_text( ).
+---
+
+(source
+  (function_call
+    source: (component_selection
+      subject: (identifier)
+      component: (identifier))
+    name: (identifier)))
+
+=================================================================================
+[ ABAP - Calling and Exiting Program Units / Calling Procedures ] Local function call
+=================================================================================
+func_or_meth_we_dont_know( ).
+---
+
+(source
+  (function_call
+    name: (identifier)))
+
+=================================================================================
+[ ABAP - Calling and Exiting Program Units / Calling Procedures ] Single parameter
+=================================================================================
+lo_object->meth1( '0.8' ).
+---
+
+(source
+  (function_call
+    source: (identifier)
+    name: (identifier)
+    (call_argument_list
+      exporting: (positional_argument
+        value: (string_literal)))))
+
+=================================================================================
+[ ABAP - Calling and Exiting Program Units / Calling Procedures ] Single named parameter
+=================================================================================
+lo_object->meth1( value = '0.8' ).
+---
+
+(source
+  (function_call
+    source: (identifier)
+    name: (identifier)
+    (call_argument_list
+      exporting: (argument_list
+        (named_argument
+          name: (identifier)
+          value: (string_literal))))))
+
+=================================================================================
+[ ABAP - Calling and Exiting Program Units / Calling Procedures ] Explicitly exporting
+=================================================================================
+lo_object->meth1( EXPORTING value = '0.8' ).
+---
+
+(source
+  (function_call
+    source: (identifier)
+    name: (identifier)
+    (call_argument_list
+      exporting: (argument_list
+        (named_argument
+          name: (identifier)
+          value: (string_literal))))))
+
+=================================================================================
+[ ABAP - Calling and Exiting Program Units / Calling Procedures ] Importing parameters
+=================================================================================
+lo_object->meth1( 
+    IMPORTING
+        sum = data(result_sum)
+        total = result_total
+    ).
+---
+
+(source
+  (function_call
+    source: (identifier)
+    name: (identifier)
+    (call_argument_list
+      importing: (argument_list
+        (named_argument
+          name: (identifier)
+          value: (declaration_expression
+            name: (identifier)))
+        (named_argument
+          name: (identifier)
+          value: (identifier))))))
+
+=================================================================================
+[ ABAP - Calling and Exiting Program Units / Calling Procedures ] Changing parameters
+=================================================================================
+lo_object->meth1( 
+    CHANGING
+        sum = result_sum
+        total = result_total
+    ).
+---
+
+(source
+  (function_call
+    source: (identifier)
+    name: (identifier)
+    (call_argument_list
+      changing: (argument_list
+        (named_argument
+          name: (identifier)
+          value: (identifier))
+        (named_argument
+          name: (identifier)
+          value: (identifier))))))
+
+=================================================================================
+[ ABAP - Calling and Exiting Program Units / Calling Procedures ] Receiving parameter
+=================================================================================
+lo_object->meth1( RECEIVING result = data(result) ).
+---
+
+(source
+  (function_call
+    source: (identifier)
+    name: (identifier)
+    (call_argument_list
+      receiving: (argument_list
+        (named_argument
+          name: (identifier)
+          value: (declaration_expression
+            name: (identifier)))))))
+
+=================================================================================
+[ ABAP - Calling and Exiting Program Units / Calling Procedures ] Exceptions
+=================================================================================
+cl_gui_frontend_services=>directory_exist( 
+  EXPORTING 
+    directory            =  '...' 
+  RECEIVING 
+    result               =   FINAL(flag) 
+  EXCEPTIONS 
+    cntl_error           = 1 
+    error_no_gui         = 2 
+    wrong_parameter      = 3 
+    not_supported_by_gui = 4 
+    OTHERS               = 5 ). 
+---
+
+(source
+  (function_call
+    source: (identifier)
+    name: (identifier)
+    (call_argument_list
+      exporting: (argument_list
+        (named_argument
+          name: (identifier)
+          value: (string_literal)))
+      receiving: (argument_list
+        (named_argument
+          name: (identifier)
+          value: (declaration_expression
+            name: (identifier))))
+      exceptions: (argument_list
+        (exception_mapping
+          name: (identifier)
+          value: (number))
+        (exception_mapping
+          name: (identifier)
+          value: (number))
+        (exception_mapping
+          name: (identifier)
+          value: (number))
+        (exception_mapping
+          name: (identifier)
+          value: (number))
+        (exception_mapping
+          name: (identifier)
+          value: (number))))))
+
+=================================================================================
+[ ABAP - Calling and Exiting Program Units / Calling Procedures ] Multiple parameters
+=================================================================================
+lx->set_location(
+    iv_location = iv_location
+    is_node     = is_node ).
+---
+
+(source
+  (function_call
+    source: (identifier)
+    name: (identifier)
+    (call_argument_list
+      exporting: (argument_list
+        (named_argument
+          name: (identifier)
+          value: (identifier))
+        (named_argument
+          name: (identifier)
+          value: (identifier))))))
+
+=================================================================================
+[ ABAP - Calling and Exiting Program Units / Calling Procedures ] Chainings
+=================================================================================
+cl_aic_islm_compl_api_factory=>get( )->create_instance( islm_scenario = lv_scenario_name ).
+---
+
+(source
+  (function_call
+    source: (function_call
+      source: (identifier)
+      name: (identifier))
+    name: (identifier)
+    (call_argument_list
+      exporting: (argument_list
+        (named_argument
+          name: (identifier)
+          value: (identifier))))))
+
+=================================================================================
+[ ABAP - Calling and Exiting Program Units / Calling Procedures ] Subsequent calls
+=================================================================================
+ro_salv->get_display_settings( )->set_list_header( t01 ).
+ro_salv->get_columns( )->set_optimize( abap_true ).
+---
+
+(source
+  (function_call
+    source: (function_call
+      source: (identifier)
+      name: (identifier))
+    name: (identifier)
+    (call_argument_list
+      exporting: (positional_argument
+        value: (identifier))))
+  (function_call
+    source: (function_call
+      source: (identifier)
+      name: (identifier))
+    name: (identifier)
+    (call_argument_list
+      exporting: (positional_argument
+        value: (identifier)))))
+
+=================================================================================
+[ ABAP - Calling and Exiting Program Units / Calling Procedures ] Chained from cast
+=================================================================================
+CAST cls( iref )->meth1( ).
+---
+
+(source
+  (function_call
+    source: (cast_expression
+      result_type: (identifier)
+      subject: (identifier))
+    name: (identifier)))
+
+=================================================================================
+[ ABAP - Calling and Exiting Program Units / Calling Procedures ] Chained from new
+=================================================================================
+NEW cls( iref )->meth1( ).
+---
+
+(source
+  (function_call
+    source: (new_expression
+      result_type: (identifier)
+      (argument_list
+        (positional_argument
+          value: (identifier))))
+    name: (identifier)))
+
+=================================================================================
+[ ABAP - Calling and Exiting Program Units / Calling Procedures ] Nested built-in calls
+=================================================================================
+DATA(matches) = xsdbool( matches( val = `jon.doe@email.com` pcre = `\w+(\.\w+)*@(\w+\.)+(\w{2,4})` ) ).
+DATA(repeat3) = COND #( WHEN repeat( val = `a` occ = 0 ) = `` THEN `Y` ELSE `Z` ).
+DATA(condense5) = condense( val = `  Rock'xxx'Roller` del = `re ` from = `x` to = `n` ).
+DATA(insert3) = insert( val = to_be_inserted sub = `#` off = strlen( to_be_inserted ) ).
+DATA(ts4) = utclong_add( val = utc4calc days = 1 hours = 2 minutes = CONV int8( '13' ) seconds = CONV decfloat34( '53.12' ) ).
+
+---
+
+(source
+  (assignment
+    (declaration_expression
+      (identifier))
+    (function_call
+      (identifier)
+      (call_argument_list
+        (positional_argument
+          (function_call
+            (identifier)
+            (call_argument_list
+              (argument_list
+                (named_argument
+                  (identifier)
+                  (string_literal))
+                (named_argument
+                  (identifier)
+                  (string_literal)))))))))
+  (assignment
+    (declaration_expression
+      (identifier))
+    (cond_expression
+      (case
+        (comparison_expression
+          (function_call
+            (identifier)
+            (call_argument_list
+              (argument_list
+                (named_argument
+                  (identifier)
+                  (string_literal))
+                (named_argument
+                  (identifier)
+                  (number)))))
+          (string_literal))
+        (string_literal))
+      (else_case
+        (string_literal))))
+  (assignment
+    (declaration_expression
+      (identifier))
+    (function_call
+      (identifier)
+      (call_argument_list
+        (argument_list
+          (named_argument
+            (identifier)
+            (string_literal))
+          (named_argument
+            (identifier)
+            (string_literal))
+          (named_argument
+            (identifier)
+            (string_literal))
+          (named_argument
+            (identifier)
+            (string_literal))))))
+  (assignment
+    (declaration_expression
+      (identifier))
+    (function_call
+      (identifier)
+      (call_argument_list
+        (argument_list
+          (named_argument
+            (identifier)
+            (identifier))
+          (named_argument
+            (identifier)
+            (string_literal))
+          (named_argument
+            (identifier)
+            (function_call
+              (identifier)
+              (call_argument_list
+                (positional_argument
+                  (identifier)))))))))
+  (assignment
+    (declaration_expression
+      (identifier))
+    (function_call
+      (identifier)
+      (call_argument_list
+        (argument_list
+          (named_argument
+            (identifier)
+            (identifier))
+          (named_argument
+            (identifier)
+            (number))
+          (named_argument
+            (identifier)
+            (number))
+          (named_argument
+            (identifier)
+            (conv_expression
+              (identifier)
+              (string_literal)))
+          (named_argument
+            (identifier)
+            (conv_expression
+              (identifier)
+              (string_literal))))))))
+
+=================================================================================
+[ ABAP - Calling and Exiting Program Units / Calling Procedures ] RTTI call chains
+=================================================================================
+DATA(components) = CAST cl_abap_structdescr( cl_abap_typedescr=>describe_by_data( <strco> ) )->components.
+DATA(tab_comps) = CAST cl_abap_structdescr( type_descr_obj_tab->get_table_line_type( ) )->get_components( ).
+DATA(tdo_tab_2) = cl_abap_tabledescr=>get( p_line_type = CAST cl_abap_structdescr( cl_abap_tabledescr=>describe_by_name( 'ZDEMO_ABAP_FLSCH' ) ) p_table_kind = cl_abap_tabledescr=>tablekind_sorted p_key = VALUE #( ( name = 'CARRID' ) ( name = 'CONNID' ) ) p_unique = cl_abap_typedescr=>true ).
+
+---
+
+(source
+  (assignment
+    (declaration_expression
+      (identifier))
+    (component_selection
+      (cast_expression
+        (identifier)
+        (function_call
+          (identifier)
+          (identifier)
+          (call_argument_list
+            (positional_argument
+              (field_symbol
+                (identifier))))))
+      (identifier)))
+  (assignment
+    (declaration_expression
+      (identifier))
+    (function_call
+      (cast_expression
+        (identifier)
+        (function_call
+          (identifier)
+          (identifier)))
+      (identifier)))
+  (assignment
+    (declaration_expression
+      (identifier))
+    (function_call
+      (identifier)
+      (identifier)
+      (call_argument_list
+        (argument_list
+          (named_argument
+            (identifier)
+            (cast_expression
+              (identifier)
+              (function_call
+                (identifier)
+                (identifier)
+                (call_argument_list
+                  (positional_argument
+                    (string_literal))))))
+          (named_argument
+            (identifier)
+            (component_selection
+              (identifier)
+              (identifier)))
+          (named_argument
+            (identifier)
+            (value_expression
+              (table_comprehension
+                (line_spec
+                  (argument_list
+                    (named_argument
+                      (identifier)
+                      (string_literal))))
+                (line_spec
+                  (argument_list
+                    (named_argument
+                      (identifier)
+                      (string_literal)))))))
+          (named_argument
+            (identifier)
+            (component_selection
+              (identifier)
+              (identifier))))))))

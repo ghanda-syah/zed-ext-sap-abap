@@ -1,0 +1,24 @@
+module.exports = {
+  /**
+   * TODO: Add tests
+   *
+   * DO [n TIMES].
+   *   [statement_block]
+   * ENDDO.
+   *
+   * https://help.sap.com/doc/abapdocu_latest_index_htm/latest/en-US/ABAPDO.html
+   */
+  do_statement: $ => seq($.__do_statement_prefix, "."),
+
+  __do_statement_prefix: $ =>
+    seq(
+      gen.kw("do"),
+      optional(field("times", $.times_spec)),
+      ".",
+      optional(field("body", $.statement_block)),
+      gen.kw("enddo"),
+    ),
+
+  times_spec: $ =>
+    seq(field("repetitions", $._numeric_position), gen.kw("times")),
+};

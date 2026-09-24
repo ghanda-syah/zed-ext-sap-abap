@@ -1,0 +1,76 @@
+=================================================================================
+[ ABAP - Procecssing Internal Data / Assignments / CONV ] Simple
+=================================================================================
+source = CONV string( text )
+---
+
+(source
+  (assignment
+    left: (identifier)
+    right: (conv_expression
+      result_type: (identifier)
+      subject: (identifier))))
+
+=================================================================================
+[ ABAP - Procecssing Internal Data / Assignments / CONV ] Calculation conversions
+=================================================================================
+int = CONV i( sqrt( 5 ) ) + CONV i( sqrt( 6 ) ).
+---
+
+(source
+  (assignment
+    left: (identifier)
+    right: (arithmetic_expression
+      left: (conv_expression
+        result_type: (identifier)
+        subject: (function_call
+          name: (identifier)
+          (call_argument_list
+            exporting: (positional_argument
+              value: (number)))))
+      right: (conv_expression
+        result_type: (identifier)
+        subject: (function_call
+          name: (identifier)
+          (call_argument_list
+            exporting: (positional_argument
+              value: (number))))))))
+
+=================================================================================
+[ ABAP - Procecssing Internal Data / Assignments / CONV ] Nested conversions and calls
+=================================================================================
+DATA(inv_date3) = CONV i( CONV d( false_date ) ).
+DATA(date_w_first_day_of_month) = CONV d( replace( val = `202403020` off = 6 len = 2 with = `01` ) ).
+
+---
+
+(source
+  (assignment
+    (declaration_expression
+      (identifier))
+    (conv_expression
+      (identifier)
+      (conv_expression
+        (identifier)
+        (identifier))))
+  (assignment
+    (declaration_expression
+      (identifier))
+    (conv_expression
+      (identifier)
+      (function_call
+        (identifier)
+        (call_argument_list
+          (argument_list
+            (named_argument
+              (identifier)
+              (string_literal))
+            (named_argument
+              (identifier)
+              (number))
+            (named_argument
+              (identifier)
+              (number))
+            (named_argument
+              (identifier)
+              (string_literal))))))))

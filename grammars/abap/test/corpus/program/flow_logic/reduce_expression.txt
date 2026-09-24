@@ -1,0 +1,378 @@
+=================================================================================
+[ ABAP - Program Flow Logic / Iteration Expressions / REDUCE ] Simple sum
+=================================================================================
+REDUCE string( INIT s = 0 
+                 FOR i = 1 UNTIL i > 10 
+                 NEXT s = i )
+---
+
+(source
+  (reduce_expression
+    result_type: (identifier)
+    (accumulators_spec
+      (accumulator_spec
+        name: (identifier)
+        value: (number)))
+    (conditional_iteration
+      init: (assignment
+        left: (identifier)
+        right: (number))
+      (iteration_condition
+        (until_spec
+          condition: (comparison_expression
+            left: (identifier)
+            right: (number)))))
+    (next_spec
+      (assignment
+        left: (identifier)
+        right: (identifier)))))
+
+=================================================================================
+[ ABAP - Program Flow Logic / Iteration Expressions / REDUCE ] Field symbol accumulator
+=================================================================================
+REDUCE string( INIT <fr> = 0 
+                 FOR i = 1 UNTIL i > 10 
+                 NEXT <fs> = i )
+---
+
+(source
+  (reduce_expression
+    result_type: (identifier)
+    (accumulators_spec
+      (accumulator_spec
+        name: (field_symbol
+          name: (identifier))
+        value: (number)))
+    (conditional_iteration
+      init: (assignment
+        left: (identifier)
+        right: (number))
+      (iteration_condition
+        (until_spec
+          condition: (comparison_expression
+            left: (identifier)
+            right: (number)))))
+    (next_spec
+      (assignment
+        left: (field_symbol
+          name: (identifier))
+        right: (identifier)))))
+
+=================================================================================
+[ ABAP - Program Flow Logic / Iteration Expressions / REDUCE ] Initial accumulator
+=================================================================================
+REDUCE string( INIT text type string
+                FOR n = 10 THEN n - 1 WHILE n > 0 
+                NEXT text &&= | { n }| )
+---
+
+(source
+  (reduce_expression
+    result_type: (identifier)
+    (accumulators_spec
+      (accumulator_spec
+        name: (identifier)
+        typing: (referred_type
+          name: (identifier))))
+    (conditional_iteration
+      init: (assignment
+        left: (identifier)
+        right: (number))
+      next: (then_spec
+        (arithmetic_expression
+          left: (identifier)
+          right: (number)))
+      (iteration_condition
+        (while_spec
+          condition: (comparison_expression
+            left: (identifier)
+            right: (number)))))
+    (next_spec
+      (calculation_assignment
+        left: (identifier)
+        right: (string_template
+          (embedded_expression
+            (identifier)))))))
+
+=================================================================================
+[ ABAP - Program Flow Logic / Iteration Expressions / REDUCE ] Default accumulator
+=================================================================================
+REDUCE string( INIT text = `Accumulator`
+                FOR n = 10 THEN n - 1 WHILE n > 0 
+                NEXT text &&= | { n }| )
+---
+
+(source
+  (reduce_expression
+    result_type: (identifier)
+    (accumulators_spec
+      (accumulator_spec
+        name: (identifier)
+        value: (string_literal)))
+    (conditional_iteration
+      init: (assignment
+        left: (identifier)
+        right: (number))
+      next: (then_spec
+        (arithmetic_expression
+          left: (identifier)
+          right: (number)))
+      (iteration_condition
+        (while_spec
+          condition: (comparison_expression
+            left: (identifier)
+            right: (number)))))
+    (next_spec
+      (calculation_assignment
+        left: (identifier)
+        right: (string_template
+          (embedded_expression
+            (identifier)))))))
+
+=================================================================================
+[ ABAP - Program Flow Logic / Iteration Expressions / REDUCE ] Multiple steps in next
+=================================================================================
+REDUCE result( INIT res = VALUE result( max = 0 text = `Result: ` ) 
+                    sep  = `` 
+                     FOR <wa> IN itab 
+                       NEXT res-text &&= sep && <wa>-id 
+                            res-sum += <wa>-num 
+                            res-max = nmax( val1 = res-max 
+                                            val2 = <wa>-num ) 
+                            sep     = `-` ).
+---
+
+(source
+  (reduce_expression
+    result_type: (identifier)
+    (accumulators_spec
+      (accumulator_spec
+        name: (identifier)
+        value: (value_expression
+          result_type: (identifier)
+          (argument_list
+            (named_argument
+              name: (identifier)
+              value: (number))
+            (named_argument
+              name: (identifier)
+              value: (string_literal)))))
+      (accumulator_spec
+        name: (identifier)
+        value: (string_literal)))
+    (table_iteration
+      work_area: (field_symbol
+        name: (identifier))
+      subject: (identifier))
+    (next_spec
+      (calculation_assignment
+        left: (component_selection
+          subject: (identifier)
+          component: (identifier))
+        right: (string_concatenation
+          left: (identifier)
+          right: (component_selection
+            subject: (field_symbol
+              name: (identifier))
+            component: (identifier))))
+      (calculation_assignment
+        left: (component_selection
+          subject: (identifier)
+          component: (identifier))
+        right: (component_selection
+          subject: (field_symbol
+            name: (identifier))
+          component: (identifier)))
+      (assignment
+        left: (component_selection
+          subject: (identifier)
+          component: (identifier))
+        right: (function_call
+          name: (identifier)
+          (call_argument_list
+            exporting: (argument_list
+              (named_argument
+                name: (identifier)
+                value: (component_selection
+                  subject: (identifier)
+                  component: (identifier)))
+              (named_argument
+                name: (identifier)
+                value: (component_selection
+                  subject: (field_symbol
+                    name: (identifier))
+                  component: (identifier)))))))
+      (assignment
+        left: (identifier)
+        right: (string_literal)))))
+
+=================================================================================
+[ ABAP - Program Flow Logic / Iteration Expressions / REDUCE ] LET with table construction
+=================================================================================
+DATA(itab10) = REDUCE tt_type3( INIT tab = VALUE #( ) FOR w5 IN itab1 LET tableline = VALUE #( itab2[ key2 = w5-key1 ] OPTIONAL ) IN NEXT tab = VALUE #( BASE tab ( key1 = w5-key1 a = w5-a b = w5-b d = tableline-d e = tableline-e ) ) ).
+
+---
+
+(source
+  (assignment
+    (declaration_expression
+      (identifier))
+    (reduce_expression
+      (identifier)
+      (accumulators_spec
+        (accumulator_spec
+          (identifier)
+          (value_expression)))
+      (table_iteration
+        (identifier)
+        (identifier)
+        (let_expression
+          (assignment
+            (identifier)
+            (value_expression
+              (table_expression
+                (identifier)
+                (free_key_spec
+                  (key_component_list
+                    (itab_comp_spec
+                      (identifier)
+                      (component_selection
+                        (identifier)
+                        (identifier)))))
+                (optional))))))
+      (next_spec
+        (assignment
+          (identifier)
+          (value_expression
+            (table_comprehension
+              (base_spec
+                (identifier))
+              (line_spec
+                (argument_list
+                  (named_argument
+                    (identifier)
+                    (component_selection
+                      (identifier)
+                      (identifier)))
+                  (named_argument
+                    (identifier)
+                    (component_selection
+                      (identifier)
+                      (identifier)))
+                  (named_argument
+                    (identifier)
+                    (component_selection
+                      (identifier)
+                      (identifier)))
+                  (named_argument
+                    (identifier)
+                    (component_selection
+                      (identifier)
+                      (identifier)))
+                  (named_argument
+                    (identifier)
+                    (component_selection
+                      (identifier)
+                      (identifier))))))))))))
+
+=================================================================================
+[ ABAP - Program Flow Logic / Iteration Expressions / REDUCE ] Outer LET and conditional iteration
+=================================================================================
+DATA(count) = REDUCE string( LET start = 10 IN INIT txt = |Counting downwards starting with { start }:| FOR n = start THEN n - 1 WHILE n > 0 NEXT txt &&= | { n }| ).
+
+---
+
+(source
+  (assignment
+    (declaration_expression
+      (identifier))
+    (reduce_expression
+      (identifier)
+      (let_expression
+        (assignment
+          (identifier)
+          (number)))
+      (accumulators_spec
+        (accumulator_spec
+          (identifier)
+          (string_template
+            (embedded_expression
+              (identifier)))))
+      (conditional_iteration
+        (assignment
+          (identifier)
+          (identifier))
+        (then_spec
+          (arithmetic_expression
+            (identifier)
+            (number)))
+        (iteration_condition
+          (while_spec
+            (comparison_expression
+              (identifier)
+              (number)))))
+      (next_spec
+        (calculation_assignment
+          (identifier)
+          (string_template
+            (embedded_expression
+              (identifier))))))))
+
+=================================================================================
+[ ABAP - Program Flow Logic / Iteration Expressions / REDUCE ] Nested conditionals
+=================================================================================
+REDUCE string( INIT text = `` sep = `` 
+        FOR word IN VALUE strings( 
+          FOR word IN words 
+           ( SWITCH #( word WHEN `All`        THEN `Some` 
+                            WHEN `imperative` THEN `functional` 
+                            ELSE word ) ) ) 
+        NEXT text = |{ text }{ sep }{ word }| sep = ` ` )
+---
+
+(source
+  (reduce_expression
+    result_type: (identifier)
+    (accumulators_spec
+      (accumulator_spec
+        name: (identifier)
+        value: (string_literal))
+      (accumulator_spec
+        name: (identifier)
+        value: (string_literal)))
+    (table_iteration
+      work_area: (identifier)
+      subject: (value_expression
+        result_type: (identifier)
+        (table_comprehension
+          (table_iteration
+            work_area: (identifier)
+            subject: (identifier))
+          (line_spec
+            (argument_list
+              (positional_argument
+                value: (switch_expression
+                  subject: (identifier)
+                  (case
+                    condition: (case_operand_list
+                      (string_literal))
+                    result: (string_literal))
+                  (case
+                    condition: (case_operand_list
+                      (string_literal))
+                    result: (string_literal))
+                  (else_case
+                    result: (identifier)))))))))
+    (next_spec
+      (assignment
+        left: (identifier)
+        right: (string_template
+          (embedded_expression
+            (identifier))
+          (embedded_expression
+            (identifier))
+          (embedded_expression
+            (identifier))))
+      (assignment
+        left: (identifier)
+        right: (string_literal)))))

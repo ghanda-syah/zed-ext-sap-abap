@@ -1,0 +1,158 @@
+module.exports = {
+  /**
+   * ... [EXPORTING  p1 = a1 p2 = a2 ...]
+   *     [IMPORTING  p1 = a1 p2 = a2 ...]
+   *     [CHANGING   p1 = a1 p2 = a2 ...]
+   *     [RECEIVING  r  = a  ]
+   *     [EXCEPTIONS [exc1 = n1 exc2 = n2 ...]
+   *     [OTHERS = n_others] ].
+   *
+   * @see https://help.sap.com/doc/abapdocu_latest_index_htm/latest/en-US/ABAPCALL_METHOD_PARAMETERS.html
+   */
+  call_argument_list: $ =>
+    repeat1(
+      choice(
+        $.__importing_args,
+        $._exporting_args,
+        $.__changing_args,
+        $.__receiving_args,
+        $.__tables_args,
+        $._parameter_table_args,
+        $.__exception_table_args,
+        $._exceptions_args,
+      ),
+    ),
+
+  // Needs to be a separate choice for builtin functio calls
+  // or method calls where the EXPORTING parameter can be omitted
+  // unlike the CALL FUNCTION statement.
+  __implicit_exporting_arguments: $ =>
+    field(
+      "exporting",
+      choice(
+        $._named_argument_list,
+        $.positional_argument,
+        $._logical_expression, // technically only for boolean functions like boolc etc..
+      ),
+    ),
+
+  // Needs higher prec than parenthesized expressions
+  // on order to get arithmetic to work
+  positional_argument: $ =>
+    prec(
+      7,
+      field(
+        "value",
+        choice(
+          $._simple_operand,
+          $.constructor_expression,
+          $.function_call,
+          $.table_expression,
+          $.arithmetic_expression,
+          $.bit_expression,
+          $.string_expression,
+          $.dereference_expression,
+        ),
+      ),
+    ),
+
+  named_argument: $ =>
+    prec(
+      7,
+      seq(
+        field(
+          "name",
+          choice(
+            $.identifier,
+            $._contextual_identifier,
+            $.dynamic_spec, // dynamic param spec in dynamic method calls
+            $.component_selection, // for components of structures
+          ),
+        ),
+        "=",
+        field("value", choice($.expression, $.declaration_expression)),
+      ),
+    ),
+
+  _parenthesized_call_arguments: $ =>
+    seq(
+      token.immediate("("),
+      token.immediate(/[\t\n\r ]/), // disambiguate from dynamic stuff, a space must exist here.
+      optional(
+        choice(
+          $.call_argument_list,
+          alias($.__implicit_exporting_arguments, $.call_argument_list),
+        ),
+      ),
+      ")",
+    ),
+
+  /**
+   * We cant be using positional argument LISTS in all argument lists
+   * as it causes conflicts with how unary operators work in arithmetic
+   * expressions. Consider:
+   *
+   * value #( ( foo + bar) )
+   *
+   * Its not possible to tell if its an aritmetic addition expression
+   * or the argument foo alongside a unary operation argument + bar.
+   *
+   * In forms, multiple positional arguments are allowed - but no expressions
+   * so this problem does not occur.
+   */
+  argument_list: $ =>
+    seq(choice(repeat1($.named_argument), $.positional_argument)),
+
+  __importing_args: $ => gen.kw_tagged("importing", $._named_argument_list),
+  _exporting_args: $ => gen.kw_tagged("exporting", $._named_argument_list),
+  __changing_args: $ => gen.kw_tagged("changing", $._named_argument_list),
+  __receiving_args: $ => gen.kw_tagged("receiving", $._named_argument_list),
+  __tables_args: $ => gen.kw_tagged("tables", $._named_argument_list),
+  _exceptions_args: $ => gen.kw_tagged("exceptions", $.__exception_mapping_list),
+  _parameter_table_args: $ =>
+    gen.kw_tagged("parameter-table", $._reference_operand),
+  __exception_table_args: $ =>
+    gen.kw_tagged("exception-table", $._reference_operand),
+
+  /**
+   * An argument list where only named arguments can occur. This is needed
+   * in statements such as {@link raise_exception} because positional args
+   * are impossible in that position and cause parser conflicts.
+   *
+   * A conflict and a higher runtime prec. is needed because the tables
+   * keyword is also an ambiguous keyword (in its usage as declaration)
+   * that the parser otherwise wants to consume as identifier.
+   */
+  _named_argument_list: $ =>
+    alias(repeat1(prec.dynamic(2, $.named_argument)), $.argument_list),
+
+  /**
+   * An argument list where only positional arguments can occur.
+   * Required for calls to a form using {@link subroutine_call}.
+   *
+   * WARN: Expressions are not possible here!!!
+   */
+  _positional_argument_list: $ =>
+    prec.right(
+      alias(
+        repeat1(
+          alias(
+            $._simple_operand,
+            $.positional_argument,
+          ),
+        ),
+        $.argument_list,
+      ),
+    ),
+
+  __exception_mapping_list: $ =>
+    prec.left(alias(repeat1($.exception_mapping), $.argument_list)),
+
+  exception_mapping: $ =>
+    seq(
+      field("name", $.identifier),
+      "=",
+      field("value", $.number),
+      optional(seq(gen.kw("message"), field("message", $._reference_operand))),
+    ),
+};

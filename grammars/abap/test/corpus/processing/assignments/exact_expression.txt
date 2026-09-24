@@ -1,0 +1,26 @@
+=================================================================================
+[ ABAP - Procecssing Internal Data / Assignments / Lossless Assignments / EXACT ] Simple
+=================================================================================
+p2 = EXACT #( p1 )
+---
+
+(source
+  (assignment
+    left: (identifier)
+    right: (exact_expression
+      subject: (identifier))))
+
+=================================================================================
+[ ABAP - Procecssing Internal Data / Assignments / Lossless Assignments / EXACT ] Arithmetic
+=================================================================================
+EXACT #( 3 * ( 1 / 3 ) ). 
+---
+
+(source
+  (exact_expression
+    subject: (arithmetic_expression
+      left: (number)
+      right: (parenthesized_expression
+        (arithmetic_expression
+          left: (number)
+          right: (number))))))

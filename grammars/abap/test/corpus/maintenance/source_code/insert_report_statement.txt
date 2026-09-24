@@ -1,0 +1,58 @@
+=================================================================================
+[ ABAP - Program Maintenance / Dynamic Program Development / ABAP Source Code / INSERT REPORT ] Basic form
+=================================================================================
+INSERT REPORT prog FROM source.
+---
+
+(source
+  (insert_report_statement
+    program: (identifier)
+    source: (identifier)))
+
+=================================================================================
+[ ABAP - Program Maintenance / Dynamic Program Development / ABAP Source Code / INSERT REPORT ] Program properties
+=================================================================================
+INSERT REPORT prog FROM source
+  MAXIMUM WIDTH INTO width
+  PROGRAM TYPE '1'
+  FIXED-POINT ARITHMETIC 'X'
+  VERSION 'X'.
+---
+
+(source
+  (insert_report_statement
+    program: (identifier)
+    source: (identifier)
+    (maximum_width_spec
+      destination: (identifier))
+    (program_type_spec
+      type: (string_literal))
+    (fixed_point_arithmetic_spec
+      value: (string_literal))
+    (version_spec
+      version: (string_literal))))
+
+=================================================================================
+[ ABAP - Program Maintenance / Dynamic Program Development / ABAP Source Code / INSERT REPORT ] Keeping directory entry
+=================================================================================
+INSERT REPORT prog FROM source KEEPING DIRECTORY ENTRY.
+---
+
+(source
+  (insert_report_statement
+    program: (identifier)
+    source: (identifier)
+    (keeping_directory_entry)))
+
+=================================================================================
+[ ABAP - Program Maintenance / Dynamic Program Development / ABAP Source Code / INSERT REPORT ] Directory entry
+=================================================================================
+INSERT REPORT prog FROM source DIRECTORY ENTRY dir.
+---
+
+(source
+  (insert_report_statement
+    program: (identifier)
+    source: (identifier)
+    (directory_entry_spec
+      entry: (identifier))))

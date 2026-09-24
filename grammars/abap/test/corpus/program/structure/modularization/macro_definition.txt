@@ -1,0 +1,53 @@
+=================================================================================
+[ ABAP - Program Structure / Modularization / Macros / DEFINE ] Empty
+=================================================================================
+DEFINE macro.
+END-OF-DEFINITION.
+---
+
+(source
+  (macro_definition
+    name: (identifier)))
+
+=================================================================================
+[ ABAP - Program Structure / Modularization / Macros / DEFINE ] Using placeholders
+=================================================================================
+DEFINE concat.
+    &1 = &2 && &3
+END-OF-DEFINITION.
+---
+
+(source
+  (macro_definition
+    name: (identifier)
+    body: (statement_block
+      (assignment
+        left: (identifier)
+        right: (string_concatenation
+          left: (identifier)
+          right: (identifier))))))
+
+=================================================================================
+[ ABAP - Program Structure / Modularization / Macros / DEFINE ] Calling without params
+=================================================================================
+foo.
+---
+
+(source
+  (macro_include
+    name: (identifier)))
+
+=================================================================================
+[ ABAP - Program Structure / Modularization / Macros / DEFINE ] Calling with params
+=================================================================================
+foo 'This' 'is' 'a' test.
+---
+
+(source
+  (macro_include
+    name: (identifier)
+    (macro_argument_list
+      (string_literal)
+      (string_literal)
+      (string_literal)
+      (identifier))))

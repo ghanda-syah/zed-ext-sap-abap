@@ -1,0 +1,448 @@
+=================================================================================
+[ ABAP - Processing Internal Data / Internal Tables / LOOP AT ] Data iterator
+=================================================================================
+loop at requests into request.
+endloop.
+---
+
+(source
+  (loop_at_statement
+    subject: (identifier)
+    result: (into_spec
+      work_area: (identifier))))
+
+=================================================================================
+[ ABAP - Processing Internal Data / Internal Tables / LOOP AT ] Reference iterator
+=================================================================================
+loop at requests reference into data(request).
+endloop.
+---
+
+(source
+  (loop_at_statement
+    subject: (identifier)
+    result: (reference_into_spec
+      work_area: (declaration_expression
+        name: (identifier)))))
+
+=================================================================================
+[ ABAP - Processing Internal Data / Internal Tables / LOOP AT ] Field-symbol iterator
+=================================================================================
+loop at requests assigning field-symbol(<request>).
+endloop.
+---
+
+(source
+  (loop_at_statement
+    subject: (identifier)
+    result: (assigning_spec
+      target: (declaration_expression
+        name: (field_symbol
+          name: (identifier))))))
+
+=================================================================================
+[ ABAP - Processing Internal Data / Internal Tables / LOOP AT ] Inline declaration
+=================================================================================
+LOOP AT VALUE t_itab( ( 1 ) ( 2 ) ( 3 ) ) ASSIGNING FIELD-SYMBOL(<fs>). 
+ENDLOOP. 
+---
+
+(source
+  (loop_at_statement
+    subject: (value_expression
+      result_type: (identifier)
+      (table_comprehension
+        (line_spec
+          (argument_list
+            (positional_argument
+              value: (number))))
+        (line_spec
+          (argument_list
+            (positional_argument
+              value: (number))))
+        (line_spec
+          (argument_list
+            (positional_argument
+              value: (number))))))
+    result: (assigning_spec
+      target: (declaration_expression
+        name: (field_symbol
+          name: (identifier))))))
+
+=================================================================================
+[ ABAP - Processing Internal Data / Internal Tables / LOOP AT ] Nested loops
+=================================================================================
+LOOP AT scarr_tab ASSIGNING FIELD-SYMBOL(<scarr_line>) 
+                  WHERE carrname CP name. 
+  LOOP AT spfli_tab INTO FINAL(spfli_line) 
+                    WHERE carrid = <scarr_line>-carrid. 
+  ENDLOOP. 
+ENDLOOP. 
+---
+
+(source
+  (loop_at_statement
+    subject: (identifier)
+    result: (assigning_spec
+      target: (declaration_expression
+        name: (field_symbol
+          name: (identifier))))
+    (itab_lines_spec
+      (where_condition_spec
+        condition: (comparison_expression
+          left: (identifier)
+          right: (identifier))))
+    body: (loop_at_body
+      (loop_at_statement
+        subject: (identifier)
+        result: (into_spec
+          work_area: (declaration_expression
+            name: (identifier)))
+        (itab_lines_spec
+          (where_condition_spec
+            condition: (comparison_expression
+              left: (identifier)
+              right: (component_selection
+                subject: (field_symbol
+                  name: (identifier))
+                component: (identifier)))))))))
+
+=================================================================================
+[ ABAP - Processing Internal Data / Internal Tables / LOOP AT ] Using key
+=================================================================================
+LOOP AT itab INTO FINAL(number2) USING KEY key. 
+ENDLOOP. 
+---
+
+(source
+  (loop_at_statement
+    subject: (identifier)
+    result: (into_spec
+      work_area: (declaration_expression
+        name: (identifier)))
+    (itab_lines_spec
+      (using_key_spec
+        name: (identifier)))))
+
+=================================================================================
+[ ABAP - Processing Internal Data / Internal Tables / LOOP AT ] From index
+=================================================================================
+LOOP AT itab FROM lines( itab ) ASSIGNING FIELD-SYMBOL(<fs>). 
+ENDLOOP.
+---
+
+(source
+  (loop_at_statement
+    subject: (identifier)
+    (itab_lines_spec
+      (lines_from_spec
+        index: (function_call
+          name: (identifier)
+          (call_argument_list
+            exporting: (positional_argument
+              value: (identifier))))))
+    result: (assigning_spec
+      target: (declaration_expression
+        name: (field_symbol
+          name: (identifier))))))
+
+=================================================================================
+[ ABAP - Processing Internal Data / Internal Tables / LOOP AT ] Sliced
+=================================================================================
+LOOP AT itab FROM 3 STEP -1 ASSIGNING FIELD-SYMBOL(<fs>) TO 1. 
+ENDLOOP. 
+---
+
+(source
+  (loop_at_statement
+    subject: (identifier)
+    (itab_lines_spec
+      (lines_from_spec
+        index: (number))
+      (lines_step_spec
+        size: (number)))
+    result: (assigning_spec
+      target: (declaration_expression
+        name: (field_symbol
+          name: (identifier))))
+    (itab_lines_spec
+      (lines_to_spec
+        index: (number)))))
+
+=================================================================================
+[ ABAP - Processing Internal Data / Internal Tables / LOOP AT ] Where condition
+=================================================================================
+LOOP AT itab INTO line FROM 10 TO 25 WHERE col2 > dref->*. 
+ENDLOOP. 
+---
+
+(source
+  (loop_at_statement
+    subject: (identifier)
+    result: (into_spec
+      work_area: (identifier))
+    (itab_lines_spec
+      (lines_from_spec
+        index: (number))
+      (lines_to_spec
+        index: (number))
+      (where_condition_spec
+        condition: (comparison_expression
+          left: (identifier)
+          right: (dereference_expression
+            subject: (identifier)))))))
+
+=================================================================================
+[ ABAP - Processing Internal Data / Internal Tables / LOOP AT ] Dynamic where condition
+=================================================================================
+LOOP AT itab INTO line FROM 10 TO 25 WHERE (cond). 
+ENDLOOP. 
+---
+
+(source
+  (loop_at_statement
+    subject: (identifier)
+    result: (into_spec
+      work_area: (identifier))
+    (itab_lines_spec
+      (lines_from_spec
+        index: (number))
+      (lines_to_spec
+        index: (number))
+      (where_condition_spec
+        condition: (dynamic_spec
+          value: (identifier))))))
+
+=================================================================================
+[ ABAP - Processing Internal Data / Internal Tables / LOOP AT ] Transporting no fields
+=================================================================================
+LOOP AT itab TRANSPORTING NO FIELDS WHERE table_line >= 40.  
+ENDLOOP.
+---
+
+(source
+  (loop_at_statement
+    subject: (identifier)
+    result: (transporting_spec
+      (no_fields))
+    (itab_lines_spec
+      (where_condition_spec
+        condition: (comparison_expression
+          left: (identifier)
+          right: (number))))))
+
+=================================================================================
+[ ABAP - Processing Internal Data / Internal Tables / LOOP AT ] Group level processing
+=================================================================================
+LOOP AT itab ASSIGNING FIELD-SYMBOL(<fs>). 
+  AT FIRST.
+  ENDAT.
+  AT NEW comp1.
+  ENDAT.
+  AT END OF comp1.
+  ENDAT.
+  AT LAST. 
+  ENDAT. 
+ENDLOOP. 
+---
+
+(source
+  (loop_at_statement
+    subject: (identifier)
+    result: (assigning_spec
+      target: (declaration_expression
+        name: (field_symbol
+          name: (identifier))))
+    body: (loop_at_body
+      (at_first_statement)
+      (at_new_statement
+        component: (identifier))
+      (at_end_of_statement
+        component: (identifier))
+      (at_last_statement))))
+
+=================================================================================
+[ ABAP - Processing Internal Data / Internal Tables / LOOP AT ] Sum control group
+=================================================================================
+LOOP AT sales INTO row.
+  AT END OF customer.
+    SUM.
+  ENDAT.
+ENDLOOP.
+---
+
+(source
+  (loop_at_statement
+    subject: (identifier)
+    result: (into_spec
+      work_area: (identifier))
+    body: (loop_at_body
+      (at_end_of_statement
+        component: (identifier)
+        body: (body
+          (sum_statement))))))
+
+=================================================================================
+[ ABAP - Processing Internal Data / Internal Tables / LOOP AT ] Sum all rows
+=================================================================================
+LOOP AT sales INTO row.
+  AT LAST.
+    SUM.
+  ENDAT.
+ENDLOOP.
+---
+
+(source
+  (loop_at_statement
+    subject: (identifier)
+    result: (into_spec
+      work_area: (identifier))
+    body: (loop_at_body
+      (at_last_statement
+        body: (body
+          (sum_statement))))))
+
+=================================================================================
+[ ABAP - Processing Internal Data / Internal Tables / LOOP AT ] Group key binding
+=================================================================================
+LOOP AT spfli_tab INTO FINAL(wa) 
+                  GROUP BY ( key1 = wa-carrid key2 = wa-airpfrom 
+                             indx = GROUP INDEX 
+                             size = GROUP SIZE ) 
+                  INTO data(key). 
+ENDLOOP. 
+---
+
+(source
+  (loop_at_statement
+    subject: (identifier)
+    result: (into_spec
+      work_area: (declaration_expression
+        name: (identifier)))
+    (group_by_spec
+      (group_key_components
+        (group_key_component
+          field: (identifier)
+          value: (component_selection
+            subject: (identifier)
+            component: (identifier)))
+        (group_key_component
+          field: (identifier)
+          value: (component_selection
+            subject: (identifier)
+            component: (identifier)))
+        (group_key_component
+          field: (identifier)
+          value: (group_index))
+        (group_key_component
+          field: (identifier)
+          value: (group_size)))
+      result: (into_spec
+        work_area: (declaration_expression
+          name: (identifier))))))
+
+=================================================================================
+[ ABAP - Processing Internal Data / Internal Tables / LOOP AT ] Representative binding
+=================================================================================
+LOOP AT itab ASSIGNING FIELD-SYMBOL(<wa>) 
+             GROUP BY ( key1 = <wa>-key1 key2 = <wa>-key2 ). 
+ENDLOOP. 
+---
+
+(source
+  (loop_at_statement
+    subject: (identifier)
+    result: (assigning_spec
+      target: (declaration_expression
+        name: (field_symbol
+          name: (identifier))))
+    (group_by_spec
+      (group_key_components
+        (group_key_component
+          field: (identifier)
+          value: (component_selection
+            subject: (field_symbol
+              name: (identifier))
+            component: (identifier)))
+        (group_key_component
+          field: (identifier)
+          value: (component_selection
+            subject: (field_symbol
+              name: (identifier))
+            component: (identifier)))))))
+
+=================================================================================
+[ ABAP - Processing Internal Data / Internal Tables / LOOP AT ] Group key binding without members
+=================================================================================
+LOOP AT spfli_tab INTO FINAL(wa) 
+                  GROUP BY wa-carrid WITHOUT MEMBERS 
+                  INTO FINAL(key). 
+ENDLOOP. 
+---
+
+(source
+  (loop_at_statement
+    subject: (identifier)
+    result: (into_spec
+      work_area: (declaration_expression
+        name: (identifier)))
+    (group_by_spec
+      key: (component_selection
+        subject: (identifier)
+        component: (identifier))
+      (without_members)
+      result: (into_spec
+        work_area: (declaration_expression
+          name: (identifier))))))
+
+=================================================================================
+[ ABAP - Processing Internal Data / Internal Tables / LOOP AT ] Expression group key
+=================================================================================
+LOOP AT itab ASSIGNING FIELD-SYMBOL(<line>) 
+              GROUP BY to_upper( <line> ) ASCENDING 
+              ASSIGNING FIELD-SYMBOL(<grp1>). 
+
+ENDLOOP. 
+---
+
+(source
+  (loop_at_statement
+    subject: (identifier)
+    result: (assigning_spec
+      target: (declaration_expression
+        name: (field_symbol
+          name: (identifier))))
+    (group_by_spec
+      key: (function_call
+        name: (identifier)
+        (call_argument_list
+          exporting: (positional_argument
+            value: (field_symbol
+              name: (identifier)))))
+      (sort_order_spec
+        direction: (ascending))
+      result: (assigning_spec
+        target: (declaration_expression
+          name: (field_symbol
+            name: (identifier)))))))
+
+=================================================================================
+[ ABAP - Processing Internal Data / Internal Tables / LOOP AT ] Loop at group
+=================================================================================
+LOOP AT GROUP key ASSIGNING FIELD-SYMBOL(<members>) 
+                WHERE cityfrom = 'NEW YORK'. 
+ENDLOOP. 
+---
+
+(source
+  (loop_at_group_statement
+    subject: (identifier)
+    result: (assigning_spec
+      target: (declaration_expression
+        name: (field_symbol
+          name: (identifier))))
+    (itab_lines_spec
+      (where_condition_spec
+        condition: (comparison_expression
+          left: (identifier)
+          right: (string_literal))))))

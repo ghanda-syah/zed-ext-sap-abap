@@ -1,0 +1,270 @@
+======
+[ABAP - Text Repositories / Messages] Compact statement
+======
+message i014(sabapdemos).
+---
+
+(source
+  (message_statement
+    (message_spec
+      type: (message_type)
+      number: (number)
+      id: (identifier))))
+
+======
+[ABAP - Text Repositories / Messages] Long form statement
+======
+message id 'ZMESSAGES' type 'A' number 999.
+---
+
+(source
+  (message_statement
+    (message_spec
+      id: (string_literal)
+      type: (string_literal)
+      number: (number))))
+
+======
+[ABAP - Text Repositories / Messages] Display alias
+======
+MESSAGE i200 DISPLAY LIKE 'S'.
+---
+
+(source
+  (message_statement
+    (message_spec
+      type: (message_type)
+      number: (number)
+      (display_like_spec
+        type: (string_literal)))))
+
+======
+[ABAP - Text Repositories / Messages] Using default class
+======
+message i220.
+---
+
+(source
+  (message_statement
+    (message_spec
+      type: (message_type)
+      number: (number))))
+
+======
+[ABAP - Text Repositories / Messages] Raising a sy-subrc
+======
+MESSAGE 'Message in a Method' TYPE 'I' RAISING exc1. 
+---
+
+(source
+  (message_statement
+    (message_spec
+          text: (string_literal)
+      type: (string_literal)
+      (raising_exception_spec
+        exception: (identifier)))))
+
+======
+[ABAP - Text Repositories / Messages] Passing only a literal string
+======
+message 'Hello World'.
+---
+
+(source
+  (message_statement
+    (message_spec
+          text: (string_literal))))
+
+======
+[ABAP - Text Repositories / Messages] Into inline declaration
+======
+MESSAGE s888(sabapdemos) 
+        WITH 'This' 'is' 'not' 'America' 
+        INTO FINAL(msg).
+---
+
+(source
+  (message_statement
+    (message_spec
+      type: (message_type)
+      number: (number)
+      id: (identifier)
+      (with_arguments_spec
+        (string_literal)
+        (string_literal)
+        (string_literal)
+        (string_literal))
+      (into_spec
+        result: (declaration_expression
+          name: (identifier))))))
+
+======
+[ABAP - Text Repositories / Messages] Properties are data objects
+======
+message id mid type mtyp number mnum.
+---
+
+(source
+  (message_statement
+    (message_spec
+      id: (identifier)
+      type: (identifier)
+      number: (identifier))))
+
+======
+[ABAP - Text Repositories / Messages] Passing placeholder values
+======
+message e888(msg_class) with 'Foo' 'Bar' 'Baz'.
+---
+
+(source
+  (message_statement
+    (message_spec
+      type: (message_type)
+      number: (number)
+      id: (identifier)
+      (with_arguments_spec
+        (string_literal)
+        (string_literal)
+        (string_literal)))))
+
+======
+[ABAP - Text Repositories / Messages] Chained statements
+======
+message: e888(msg_class) with 'Foo' 'Bar' 'Baz', 
+         i222 with '1' '2' '3',
+         id 'zbar' type 'X' number 11.
+---
+
+(source
+  (message_statement
+    (message_spec
+      type: (message_type)
+      number: (number)
+      id: (identifier)
+      (with_arguments_spec
+        (string_literal)
+        (string_literal)
+        (string_literal)))
+    (message_spec
+      type: (message_type)
+      number: (number)
+      (with_arguments_spec
+        (string_literal)
+        (string_literal)
+        (string_literal)))
+    (message_spec
+      id: (string_literal)
+      type: (string_literal)
+      number: (number))))
+
+======
+[ABAP - Text Repositories / Messages] Expression as text
+======
+message conv string( lines( itab ) ) type 'I'.
+---
+
+(source
+  (message_statement
+    (message_spec
+      (conv_expression
+        (identifier)
+        (function_call
+          (identifier)
+          (call_argument_list
+            (positional_argument
+              (identifier)))))
+      (string_literal))))
+
+======
+[ABAP - Text Repositories / Messages] Method call as text
+======
+MESSAGE oref->get_text( ) TYPE 'I'. 
+---
+
+(source
+  (message_statement
+    (message_spec
+      (function_call
+        (identifier)
+        (identifier))
+      (string_literal))))
+
+======
+[ABAP - Text Repositories / Messages] From system fields
+======
+MESSAGE ID sy-msgid TYPE sy-msgty NUMBER sy-msgno 
+        INTO FINAL(mtext) 
+        WITH sy-msgv1 sy-msgv2 sy-msgv3 sy-msgv4. 
+---
+
+(source
+  (message_statement
+    (message_spec
+      id: (component_selection
+        subject: (identifier)
+        component: (identifier))
+      type: (component_selection
+        subject: (identifier)
+        component: (identifier))
+      number: (component_selection
+        subject: (identifier)
+        component: (identifier))
+      (into_spec
+        result: (declaration_expression
+          name: (identifier)))
+      (with_arguments_spec
+        (component_selection
+          subject: (identifier)
+          component: (identifier))
+        (component_selection
+          subject: (identifier)
+          component: (identifier))
+        (component_selection
+          subject: (identifier)
+          component: (identifier))
+        (component_selection
+          subject: (identifier)
+          component: (identifier))))))
+
+======
+[ABAP - Text Repositories / Messages] Message class is numeric
+======
+message i368(00) with 'No import'(002) <ls_request>-trkorr.
+---
+
+(source
+  (message_statement
+    (message_spec
+      type: (message_type)
+      number: (number)
+      id: (number)
+      (with_arguments_spec
+        (text_symbol
+          literal: (string_literal)
+          id: (symbol_id))
+        (component_selection
+          subject: (field_symbol
+            name: (identifier))
+          component: (identifier))))))
+
+======
+[ABAP - Text Repositories / Messages] Text symbol as parameter
+======
+message i368(00) with text-aab <ls_request>-trkorr.
+---
+
+(source
+  (message_statement
+    (message_spec
+      type: (message_type)
+      number: (number)
+      id: (number)
+      (with_arguments_spec
+        (text_symbol
+          (identifier)
+          id: (symbol_id))
+        (component_selection
+          subject: (field_symbol
+            name: (identifier))
+          component: (identifier))))))

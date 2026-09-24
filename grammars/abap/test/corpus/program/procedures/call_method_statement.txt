@@ -1,0 +1,162 @@
+=================================================================================
+[ ABAP - Calling and Exiting Program Units / Calling Procedures / CALL METHOD ] By identifier
+=================================================================================
+CALL METHOD meth_name.
+---
+
+(source
+  (call_method_statement
+    name: (identifier)))
+
+=================================================================================
+[ ABAP - Calling and Exiting Program Units / Calling Procedures / CALL METHOD ] Dynamic spec
+=================================================================================
+CALL METHOD (meth_name).
+---
+
+(source
+  (call_method_statement
+    name: (dynamic_spec
+      value: (identifier))))
+
+=================================================================================
+[ ABAP - Calling and Exiting Program Units / Calling Procedures / CALL METHOD ] Dyn instance method
+=================================================================================
+CALL METHOD oref->(meth_name).
+---
+
+(source
+  (call_method_statement
+    name: (component_selection
+      subject: (identifier)
+      component: (dynamic_spec
+        value: (identifier)))))
+
+=================================================================================
+[ ABAP - Calling and Exiting Program Units / Calling Procedures / CALL METHOD ] Dyn class method
+=================================================================================
+CALL METHOD class=>(meth_name).
+---
+
+(source
+  (call_method_statement
+    name: (component_selection
+      subject: (identifier)
+      component: (dynamic_spec
+        value: (identifier)))))
+
+=================================================================================
+[ ABAP - Calling and Exiting Program Units / Calling Procedures / CALL METHOD ] Dyn class
+=================================================================================
+CALL METHOD (class_name)=>meth.
+---
+
+(source
+  (call_method_statement
+    name: (component_selection
+      subject: (dynamic_spec
+        value: (identifier))
+      component: (identifier))))
+
+=================================================================================
+[ ABAP - Calling and Exiting Program Units / Calling Procedures / CALL METHOD ] Dyn class + method
+=================================================================================
+CALL METHOD (class_name)=>(meth_name).
+---
+
+(source
+  (call_method_statement
+    name: (component_selection
+      subject: (dynamic_spec
+        value: (identifier))
+      component: (dynamic_spec
+        value: (identifier)))))
+
+=================================================================================
+[ ABAP - Calling and Exiting Program Units / Calling Procedures / CALL METHOD ] Parameter tables
+=================================================================================
+CALL METHOD (class)=>(meth) 
+  PARAMETER-TABLE ptab 
+  EXCEPTION-TABLE etab. 
+---
+
+(source
+  (call_method_statement
+    name: (component_selection
+      subject: (dynamic_spec
+        value: (identifier))
+      component: (dynamic_spec
+        value: (identifier)))
+    (call_argument_list
+      parameter_table: (identifier)
+      exception_table: (identifier))))
+
+=================================================================================
+[ ABAP - Calling and Exiting Program Units / Calling Procedures / CALL METHOD ] Dynamic parameters
+=================================================================================
+CALL METHOD ('CL_ABAP_BROWSER')=>('SHOW_HTML') 
+  EXPORTING 
+    (name) = `<html><body>Oh no ...</html></body>`. 
+---
+
+(source
+  (call_method_statement
+    name: (component_selection
+      subject: (dynamic_spec
+        value: (string_literal))
+      component: (dynamic_spec
+        value: (string_literal)))
+    (call_argument_list
+      exporting: (argument_list
+        (named_argument
+          name: (dynamic_spec
+            value: (identifier))
+          value: (string_literal))))))
+
+=================================================================================
+[ ABAP - Calling and Exiting Program Units / Calling Procedures / CALL METHOD ] Dynamic structure component
+=================================================================================
+CALL METHOD (meth_wa-name) EXPORTING out = out text = CONV string( meth_wa-name ).
+---
+
+(source
+  (call_method_statement
+    name: (dynamic_spec
+      value: (component_selection
+        subject: (identifier)
+        component: (identifier)))
+    (call_argument_list
+      exporting: (argument_list
+        (named_argument
+          name: (identifier)
+          value: (identifier))
+        (named_argument
+          name: (identifier)
+          value: (conv_expression
+            result_type: (identifier)
+            subject: (component_selection
+              subject: (identifier)
+              component: (identifier))))))))
+
+=================================================================================
+[ ABAP - Calling and Exiting Program Units / Calling Procedures / CALL METHOD ] Dynamic class with parameters
+=================================================================================
+CALL METHOD (`ZCL_DEMO_ABAP_DYNAMIC_PROG`)=>stat_meth2 EXPORTING text = `hallo` IMPORTING result = res.
+
+---
+
+(source
+  (call_method_statement
+    (component_selection
+      (dynamic_spec
+        (string_literal))
+      (identifier))
+    (call_argument_list
+      (argument_list
+        (named_argument
+          (identifier)
+          (string_literal)))
+      (argument_list
+        (named_argument
+          (identifier)
+          (identifier))))))

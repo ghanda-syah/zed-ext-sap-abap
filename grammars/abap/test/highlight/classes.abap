@@ -1,0 +1,106 @@
+CLASS cl_demo_spfli DEFINITION 
+"<- keyword.type
+"     ^ type
+  PUBLIC 
+" ^ keyword.modifier
+  FINAL 
+" ^ keyword.modifier
+  CREATE PUBLIC
+  INHERITING FROM cl_parent
+"                 ^ type
+  GLOBAL FRIENDS cl_parent
+"                 ^ type
+  ABSTRACT
+" ^ keyword.modifier
+  FOR BEHAVIOR OF demo_managed_additional_save.
+"                 ^ type
+  PUBLIC SECTION.
+" ^ keyword.modifier
+    data t_requested_transports type scts_trkorrs.
+"        ^ variable.member
+    data: begin of gc_constants,
+"                  ^ variable.member
+           f1 type x,
+           f2 type c,
+           end of gc_constants.
+"                  ^ variable.member
+    class-data gv_batch type flag.
+"              ^ variable.member
+    class-data: begin of gc_constants,
+"                        ^ variable.member
+               f1 type x,
+               f2 type c,
+               end of gc_constants,
+"                     ^ variable.member
+               var type string.
+"              ^ variable.member
+  PROTECTED SECTION.
+" ^ keyword.modifier
+  PRIVATE SECTION.
+" ^ keyword.modifier
+ENDCLASS.
+
+CLASS lsc_demo_events DEFINITION
+"     ^ type
+  FOR EVENTS OF demo_managed_root.
+"               ^ type
+ENDCLASS.
+
+CLASS c1 DEFINITION DEFERRED. 
+"     ^ type
+
+CLASS chained_class_data DEFINITION.
+  PUBLIC SECTION.
+    CLASS-DATA:
+      BEGIN OF first_class_data,
+"              ^ variable.member
+        field_a TYPE i,
+"       ^ variable.member
+        field_b TYPE string,
+"       ^ variable.member
+      END OF first_class_data,
+"            ^ variable.member
+      BEGIN OF second_class_data,
+"              ^ variable.member
+        field_c TYPE i,
+"       ^ variable.member
+        field_d TYPE string,
+"       ^ variable.member
+      END OF second_class_data.
+"            ^ variable.member
+ENDCLASS.
+
+CLASS cl_demo_amdp_mesh DEFINITION
+"     ^ type
+  LOCAL FRIENDS cl_one cl_two cl_three.
+"               ^ type
+"                      ^ type
+"                             ^ type
+INTERFACE intf1. 
+"<- keyword.type
+"         ^ type
+interfaces zinf.
+"          ^ type
+ENDINTERFACE. 
+INTERFACE intf2 DEFERRED. 
+"         ^ type
+ 
+CLASS demo DEFINITION ABSTRACT. 
+"     ^ type
+  PUBLIC SECTION. 
+    INTERFACES intf 
+"              ^ type
+      ABSTRACT METHODS intf1~meth1 meth2
+"                      ^ type
+"                            ^ function.method
+"                                  ^ function.method
+      FINAL METHODS intf1~meth1 meth2
+      ALL METHODS FINAL
+"                 ^ keyword.modifier
+      ALL METHODS ABSTRACT
+"                 ^ keyword.modifier
+      DATA VALUES attr1 = 'Hello' 
+"                 ^ variable.member
+      attr2 = 'World'. 
+"     ^ variable.member
+ENDCLASS. 
