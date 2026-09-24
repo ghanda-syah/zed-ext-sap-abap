@@ -1,65 +1,76 @@
-# zed-abap
+# ⚡ SAP ABAP Language Support for Zed Editor (`zed-abap`)
 
-SAP ABAP language support for [Zed Editor](https://zed.dev).
+[![Zed Extension](https://img.shields.io/badge/Zed-Extension-blue.svg)](https://zed.dev)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![ABAP](https://img.shields.io/badge/Language-SAP%20ABAP-008fd3.svg)](https://www.sap.com)
 
-## Features
+Ekstensi resmi komunitas untuk menghadirkan dukungan bahasa pemrograman **SAP ABAP** di **[Zed Editor](https://zed.dev)**. Dirancang khusus untuk developer SAP yang menginginkan editor yang **super ringan, ultra responsif (berbasis Rust + GPU Acceleration), dan siap terintegrasi dengan AI Agent (Model Context Protocol / MCP)** sebagai alternatif modern dari SAP GUI / Eclipse ADT.
 
-- ✅ **Syntax Highlighting** — Full ABAP syntax highlighting via [tree-sitter-abap](https://github.com/kennyhml/tree-sitter-abap)
-- ✅ **Code Outline** — Navigate classes, methods, forms, function modules in the Outline panel
-- ✅ **Bracket Matching** — Parentheses highlighting
-- ✅ **Auto-Indentation** — Smart indentation for block structures
-- ✅ **Comment Support** — Line comments (`"`, `*`) and block comments (`/* */`)
-- ✅ **AI MCP Ready** — Zero-friction integration with SAP ABAP MCP servers for AI Agents
+---
 
-## Installation
+## ✨ Fitur Utama (Features)
 
-### From Zed Extensions (once published)
-1. Open Zed
-2. `Cmd+Shift+P` → `zed: extensions`
-3. Search for "ABAP"
-4. Click Install
+- 🎨 **Full Syntax Highlighting** — Mewarnai semua keyword ABAP modern (7.40+, 7.50+, ABAP Cloud, RAP, CDS, Open SQL) menggunakan grammar [tree-sitter-abap](https://github.com/kennyhml/tree-sitter-abap).
+- 🌲 **Code Outline Panel** — Navigasi instan ke definisi Class, Interface, Method, Form, Function Module, dan Event block.
+- 🔗 **Bracket & Block Matching** — Pencocokan tanda kurung dan struktur logika.
+- 📐 **Smart Auto-Indentation** — Indentasi otomatis pada blok `CLASS`, `METHOD`, `IF`, `LOOP`, `TRY`, `SELECT`, dll.
+- 💬 **Comment Support** — Komentar baris (`"`, `*`) dan block comment (`/* */`).
+- 🤖 **AI MCP Ready** — Terhubung langsung dengan AI Assistant di Zed (Claude / Gemini) untuk membaca dan memanipulasi objek SAP secara langsung.
 
-### Development / Local Install
-1. Clone this repository
-2. Open Zed
-3. `Cmd+Shift+P` → `zed: install dev extension`
-4. Select the `zed-abap` directory
+---
+
+## 📥 Panduan Instalasi (Installation)
+
+### Cara 1: Install dari Zed Extensions (Jika sudah dipublish)
+1. Buka Zed Editor.
+2. Tekan `Cmd + Shift + P` lalu ketik `zed: extensions`.
+3. Cari **ABAP** lalu klik **Install**.
+
+### Cara 2: Install via Local Development (Dev Extension)
+1. Clone repositori ini ke komputer Anda:
+   ```bash
+   git clone git@github-personal:ghanda-syah/zed-ext-sap-abab.git
+   ```
+2. Buka **Zed Editor**.
+3. Tekan `Cmd + Shift + P` lalu ketik:
+   ```text
+   zed: install dev extension
+   ```
+4. Pilih folder repositori `zed-ext-sap-abab` (atau `zed-abap`).
 
 ---
 
 ## 🚀 Workflow Harian yang Direkomendasikan (Daily Workflow)
 
-Dengan kombinasi **Zed + Tree-sitter ABAP + MCP Server**, workflow development menjadi sangat ringan, modern, dan cepat:
+Pengembangan SAP ABAP modern menggunakan Zed memberikan kecepatan luar biasa dibandingkan Eclipse/SAP GUI:
 
 ```mermaid
 flowchart LR
-    A["1. Buka Folder / Repo Lokal di Zed"] --> B["2. AI Agent fetch / search object via MCP"]
-    B --> C["3. Coding & Refactor di Zed (Ultra Cepat)"]
-    C --> D["4. AI Agent Save, Syntax Check & Activate ke SAP"]
-    D --> E["5. Commit ke Git / abapGit / Transport Request"]
+    A["1. Buka Repo ABAP di Zed"] --> B["2. AI Agent Fetch Objek dari SAP via MCP"]
+    B --> C["3. Coding & Refactor di Zed (Ultra Ringan)"]
+    C --> D["4. AI Agent Check Syntax & Aktivasi ke SAP"]
+    D --> E["5. Git Commit & Versioning (abapGit)"]
 ```
 
-### Langkah-langkah Praktis:
-
-1. **Buka Workspace di Zed (`Cmd + O`)**:
-   - Buka folder project ABAP lokal Anda (yang terhubung dengan abapGit atau repositori lokal).
-2. **Gunakan Zed AI Assistant (`Cmd + ?`) / Claude Code (`Ctrl + ~`)**:
-   - Manfaatkan MCP server untuk mengambil source code langsung dari SAP:
-     > *"Tolong cari dan tampilkan method `GET_FLIGHT_DETAILS` dari class `ZCL_FLIGHT_MANAGER`."*
-3. **Coding & Refactoring**:
-   - Tulis kode ABAP dengan syntax highlighting responsif, auto-closing bracket, dan navigasi outline yang instan.
-4. **Syntax Check & Aktivasi ke SAP**:
-   - Minta AI Agent untuk melakukan pengecekan syntax dan aktivasi objek di server SAP via MCP (`activate_object` / ATC check).
-5. **Versioning**:
-   - Lakukan commit perubahan ke Git lokal (`Cmd + Shift + G` di Zed) atau sync ke SAP via abapGit.
+### Langkah Praktis:
+1. **Buka Project Lokal (`Cmd + O`)**: Buka folder project ABAP lokal Anda (yang terhubung dengan abapGit).
+2. **AI Assistance (`Cmd + ?` atau `Ctrl + ~`)**:
+   Minta AI Agent untuk mengambil objek dari SAP:
+   > *"Tolong ambil source code class `ZCL_SALES_CONTROLLER` dari sistem SAP."*
+3. **Coding & Edit**: Edit kode dengan kecepatan penuh tanpa lag memori.
+4. **Aktivasi ke SAP**: Jalankan aktivasi dan pemeriksaan syntax (ATC Check) via MCP tool.
+5. **Git Versioning**: Simpan perubahan dengan `git commit` di Zed.
 
 ---
 
-## ⚡ MCP Integration (AI Agent for SAP)
+## ⚡ Integrasi AI MCP Server (Koneksi ke SAP)
 
-Tambahkan konfigurasi MCP server ke `~/.config/zed/settings.json` (`Cmd + ,`):
+Untuk menghubungkan Zed AI Assistant dengan SAP secara langsung, tambahkan konfigurasi MCP server ke file settings Zed Anda (`~/.config/zed/settings.json` atau via menu `Cmd + ,`):
 
-### Option A: Standalone `mcp-abap-adt` (Rekomendasi: Tanpa VS Code)
+### 🌟 Pilihan A: Standalone `mcp-abap-adt` (Rekomendasi — Tanpa VS Code)
+
+1. Pastikan Node.js sudah terpasang di komputer Anda.
+2. Tambahkan block `context_servers` berikut ke `~/.config/zed/settings.json`:
 
 ```json
 {
@@ -80,14 +91,11 @@ Tambahkan konfigurasi MCP server ke `~/.config/zed/settings.json` (`Cmd + ,`):
 }
 ```
 
-### Option B: Via ABAP Remote Filesystem (VS Code bridge)
+### 🌉 Pilihan B: Melalui VS Code Bridge (ABAP Remote Filesystem)
 
-Jika Anda menjalankan VS Code dengan extension [ABAP Remote Filesystem](https://github.com/marcellourbani/vscode_abap_remote_fs):
-
-1. Koneksikan ke sistem SAP di VS Code
-2. Jalankan MCP Server (`Cmd+Shift+P` → "ABAP FS MCP")
-3. Tambahkan ke Zed `settings.json`:
-
+Jika Anda sudah menggunakan extension [ABAP Remote Filesystem](https://github.com/marcellourbani/vscode_abap_remote_fs) di VS Code:
+1. Jalankan fitur **ABAP FS MCP Server** di VS Code.
+2. Tambahkan ke `settings.json` Zed:
 ```json
 {
   "context_servers": {
@@ -100,52 +108,56 @@ Jika Anda menjalankan VS Code dengan extension [ABAP Remote Filesystem](https://
 
 ---
 
-## ❓ FAQ & Pertanyaan Umum
+## ❓ Tanya Jawab & Konsep Penting (FAQ)
 
-### 1. Apakah di SAP ABAP perlu proses compile sebelum deployment?
-* **Ya, di SAP istilahnya adalah "Activation" (Aktivasi)**.
-* Saat kode ABAP ditulis, statusnya adalah **Inactive**. Agar bisa dijalankan dan masuk ke runtime environment, objek harus di-**Activate** (proses ini sekaligus melakukan kompilasi bytecode/load generation di level application server SAP).
-* **Deployment di SAP**: Dilakukan melalui **Transport Request (CTS/TMS)** atau **gCTS (Git-enabled CTS)** pada sistem S/4HANA & BTP.
+### 1. Apakah di SAP ABAP perlu compile saat deploy?
+* **Ya, istilah resminya adalah Aktivasi (Activation)**.
+* Saat kode ditulis, statusnya adalah *Inactive* (draft). Saat Anda menekan *Activate*, sistem SAP akan melakukan pemeriksaan syntax dan mengkompilasi bytecode ke runtime application server.
+* Deployment antar server (DEV $\rightarrow$ QAS $\rightarrow$ PRD) menggunakan **Transport Request (CTS)** atau **gCTS (Git-enabled CTS)**.
 
-### 2. Apakah bisa didukung oleh Git Versioning dan Graphify?
-* **Git Versioning**: Sangat didukung! Komunitas SAP menggunakan standard **[abapGit](https://abapgit.org)** yang mengekspor objek SAP menjadi file lokal (seperti `.abap`, `.xml` metadata), sehingga Anda bisa melakukan `git commit`, `branch`, dan `PR` langsung dari Zed.
-* **Graphify**: Bisa digunakan untuk menganalisis relasi dependensi (CALL FUNCTION, inheritance, interface implementation, database table references) dari file-file ABAP di workspace Anda.
+### 2. Apakah bisa didukung oleh Git Versioning (abapGit) dan Graphify?
+* **Sangat bisa!** Standar industri saat ini menggunakan **[abapGit](https://abapgit.org)** yang mengekspor class, report, CDS view, dan tabel SAP ke format file lokal (`.clas.abap`, `.xml`). Anda bisa melakukan branching, commit, dan PR seperti project software modern lainnya.
+* **Graphify**: Dapat digunakan untuk memetakan diagram relasi class, method dependencies, dan CDS data model di codebase lokal Anda.
 
-### 3. Bagaimana dengan komponen/package khusus ABAP di macOS?
-* Backend ABAP berjalan di **SAP Application Server** (NetWeaver / ABAP Platform), bukan lokal di mesin macOS Anda.
-* Karena semua interaksi (baca DDIC table, structure, domain, data element, function module standard/custom) dijembatani lewat **SAP ADT REST API (`/sap/bc/adt/*`)** melalui HTTPS/RFC, seluruh library dan package SAP tetap 100% dapat diakses dari macOS tanpa keterbatasan platform!
+### 3. Bagaimana dengan komponen, library, dan package SAP di macOS?
+* **100% Aman & Didukung**. Runtime engine ABAP dan database berjalan di server SAP (Cloud/On-Premise), bukan di komputer lokal macOS.
+* Semua akses ke library SAP (`BAPI_*`, standard classes, DDIC structures) dijembatani melalui **SAP ADT REST API (`/sap/bc/adt/*`)** over HTTPS.
 
 ---
 
-## File Structure
+## 📁 Struktur File Ekstensi (Project Structure)
 
-```
+```text
 zed-abap/
-├── extension.toml              # Extension manifest
+├── extension.toml              # Manifest metadata ekstensi Zed
+├── grammars/
+│   └── abap.wasm               # Compiled Tree-sitter WebAssembly parser
 ├── languages/
 │   └── abap/
-│       ├── config.toml         # Language configuration
-│       ├── highlights.scm      # Syntax highlighting (1100+ rules)
-│       ├── outline.scm         # Code structure outline
-│       ├── brackets.scm        # Bracket matching
-│       ├── indents.scm         # Auto-indentation
-│       └── injections.scm      # Embedded language support
+│       ├── config.toml         # Konfigurasi bahasa & komentar
+│       ├── highlights.scm      # 1100+ baris aturan syntax highlighting
+│       ├── outline.scm         # Aturan navigasi struktur kode
+│       ├── brackets.scm        # Bracket matching rules
+│       ├── indents.scm         # Aturan auto-indentasi
+│       └── injections.scm      # Dukungan embedded SQL/string
 ├── examples/
-│   └── z_sample_abap.abap      # Sample ABAP code
-└── README.md
+│   └── z_sample_abap.abap      # Contoh kode program ABAP untuk testing
+└── README.md                   # Dokumentasi lengkap
 ```
 
-## Supported File Extensions
+## 📄 File Extension yang Didukung
 
 - `.abap`
 - `.abap.txt`
 
-## Credits
+---
+
+## 🤝 Kontribusi & Credits
 
 - Tree-sitter grammar: [kennyhml/tree-sitter-abap](https://github.com/kennyhml/tree-sitter-abap)
 - MCP server: [mario-andreschak/mcp-abap-adt](https://github.com/mario-andreschak/mcp-abap-adt)
-- Inspired by: [ABAP Remote Filesystem](https://github.com/marcellourbani/vscode_abap_remote_fs)
+- Inspirasi arsitektur: [ABAP Remote Filesystem (Marcello Urbani)](https://github.com/marcellourbani/vscode_abap_remote_fs)
 
-## License
+## 📝 Lisensi
 
-MIT
+Distribusi di bawah lisensi [MIT](LICENSE). Bebas digunakan dan dikembangkan untuk komunitas ABAP.

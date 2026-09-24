@@ -2,9 +2,9 @@ id = "abap"
 name = "ABAP"
 version = "0.1.0"
 schema_version = 1
-authors = ["ghanda"]
+authors = ["ghanda-syah"]
 description = "SAP ABAP language support for Zed — syntax highlighting, code outline, bracket matching, and auto-indentation."
-repository = "https://github.com/ghanda/zed-abap"
+repository = "https://github.com/ghanda-syah/zed-ext-sap-abab"
 
 [grammars.abap]
 repository = "https://github.com/kennyhml/tree-sitter-abap"
