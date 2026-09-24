@@ -62,6 +62,61 @@ flowchart LR
 
 ---
 
+## 🚢 Panduan Deployment SAP ABAP Menggunakan Zed (Deployment Guide)
+
+Bagi developer yang baru beralih ke Zed, Anda mungkin bertanya: **"Bagaimana cara men-deploy kode dari Zed ke sistem SAP QA & Production?"**
+
+Di ekosistem SAP, proses deployment tidak meng-upload binary seperti web app konvensional, melainkan melalui **Aktivasi & Transport System**. Berikut 2 cara deployment yang didukung:
+
+### 🏢 Cara 1: Enterprise Standard — Transport Request (CTS / TMS)
+
+Ini adalah alur standar di lingkungan On-Premise maupun S/4HANA Private Cloud:
+
+```mermaid
+flowchart TD
+    subgraph Dev_Machine["💻 Komputer Lokal (Zed)"]
+        Z1["1. Edit kode .abap di Zed"] --> Z2["2. Minta AI Agent Save & Activate via MCP"]
+    end
+
+    subgraph SAP_DEV["🟡 SAP Development (DEV)"]
+        S1["Objek disimpan ke Transport Request\n(Contoh: DEVK900123)"]
+        S2["Developer Release Task & Transport Request (SE09/SE10)"]
+    end
+
+    subgraph SAP_LANDSCAPE["🟢 Target Systems"]
+        QAS["SAP Quality (QAS)\nTMS Import"] --> PRD["SAP Production (PRD)\nTMS Import"]
+    end
+
+    Z2 --> S1
+    S1 --> S2
+    S2 --> QAS
+```
+
+1. **Coding di Zed**: Tulis logika ABAP Anda di file lokal.
+2. **Save & Activate via MCP**: AI Agent mengirim kode ke server SAP DEV melalui ADT API dan mengaitkannya ke **Transport Request (TR)** yang sudah disiapkan.
+3. **Release Transport Request**: Setelah pengujian di DEV selesai, rilis TR tersebut di SAP (via transaksi `SE09` / `SE10` atau via ADT).
+4. **Import ke QAS & PRD**: Tim Basis / Release Engineer akan meng-import TR tersebut ke sistem Quality dan Production melalui TMS (Transport Management System).
+
+---
+
+### 🌐 Cara 2: Modern GitOps — CI/CD dengan abapGit / gCTS
+
+Ini adalah alur modern yang biasa digunakan untuk ABAP Cloud, SAP BTP, dan open-source ABAP:
+
+```mermaid
+flowchart LR
+    A["Zed Editor\n(git commit & push)"] --> B["GitHub / GitLab\n(Pull Request & Code Review)"]
+    B --> C["CI/CD Pipeline\n(abaplint & Unit Test)"]
+    C --> D["SAP BTP / S/4HANA\n(abapGit / gCTS Auto-Sync & Activate)"]
+```
+
+1. **Git Commit di Zed**: Simpan perubahan kode Anda ke Git branch lokal.
+2. **Push & Pull Request**: Push ke GitHub/GitLab dan buat Pull Request untuk review tim.
+3. **Automated CI Checks**: GitHub Actions otomatis menjalankan linter `abaplint` dan unit test.
+4. **Deploy / Sync**: Begitu PR dimerge ke `main`, **abapGit** atau **gCTS** di SAP akan menarik (pull) perubahan terbaru dan mengaktifkannya di sistem target secara otomatis.
+
+---
+
 ## ⚡ Integrasi AI MCP Server (Koneksi ke SAP)
 
 Untuk menghubungkan Zed AI Assistant dengan SAP secara langsung, tambahkan konfigurasi MCP server ke file settings Zed Anda (`~/.config/zed/settings.json` atau via menu `Cmd + ,`):
