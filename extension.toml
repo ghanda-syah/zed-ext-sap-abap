@@ -1,0 +1,12 @@
+[package]
+id = "abap"
+name = "ABAP"
+version = "0.1.0"
+schema_version = 1
+authors = ["ghanda"]
+description = "SAP ABAP language support for Zed — syntax highlighting, code outline, bracket matching, and auto-indentation."
+repository = "https://github.com/ghanda/zed-abap"
+
+[grammars.abap]
+repository = "https://github.com/kennyhml/tree-sitter-abap"
+commit = "69bfa3f4b06588eb427301449ed4bc9eeb4eb72f"
