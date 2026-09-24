@@ -1,4 +1,14 @@
+# macOS
 .DS_Store
+.AppleDouble
+.LSOverride
+._*
+**/.DS_Store
+
+# Windows & Linux
+Thumbs.db
+ehthumbs.db
+
 # Generated parser files (too large for git, ~90MB)
 # Run `npx tree-sitter generate` in the tree-sitter-abap repo to regenerate
 grammars/abap/src/parser.c
