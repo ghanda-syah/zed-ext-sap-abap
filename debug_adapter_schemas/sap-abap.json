@@ -1,0 +1,48 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "SAP-ABAP Debug Configuration",
+  "type": "object",
+  "required": ["request"],
+  "properties": {
+    "type": {
+      "type": "string",
+      "description": "Debug adapter type",
+      "enum": ["sap-abap"]
+    },
+    "request": {
+      "type": "string",
+      "description": "Request type",
+      "enum": ["launch", "attach"]
+    },
+    "sapUrl": {
+      "type": "string",
+      "description": "SAP Server URL (e.g., https://sap-dev.example.com:44300)"
+    },
+    "client": {
+      "type": "string",
+      "description": "SAP Client (e.g., 100)",
+      "default": "100"
+    },
+    "user": {
+      "type": "string",
+      "description": "SAP Username"
+    },
+    "password": {
+      "type": "string",
+      "description": "SAP Password"
+    },
+    "debugUser": {
+      "type": "string",
+      "description": "Target SAP user to debug (for external/HTTP/RFC sessions)"
+    },
+    "terminalId": {
+      "type": "string",
+      "description": "Terminal ID for external debugging session"
+    },
+    "stopOnEntry": {
+      "type": "boolean",
+      "description": "Automatically pause execution on the first statement",
+      "default": false
+    }
+  }
+}
