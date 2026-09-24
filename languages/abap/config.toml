@@ -1,4 +1,4 @@
-name = "ABAP"
+name = "SAP-ABAP"
 grammar = "abap"
 path_suffixes = ["abap", "abap.txt"]
 line_comments = ["\" ", "* "]

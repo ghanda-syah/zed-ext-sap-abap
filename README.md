@@ -1,10 +1,9 @@
-# ⚡ SAP ABAP Language Support for Zed Editor (`zed-abap`)
+# ⚡ SAP-ABAP Language Support for Zed Editor (`zed-sap-abap`)
 
 [![Zed Extension](https://img.shields.io/badge/Zed-Extension-blue.svg)](https://zed.dev)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![ABAP](https://img.shields.io/badge/Language-SAP%20ABAP-008fd3.svg)](https://www.sap.com)
 
-Ekstensi resmi komunitas untuk menghadirkan dukungan bahasa pemrograman **SAP ABAP** di **[Zed Editor](https://zed.dev)**. Dirancang khusus untuk developer SAP yang menginginkan editor yang **super ringan, ultra responsif (berbasis Rust + GPU Acceleration), dan siap terintegrasi dengan AI Agent (Model Context Protocol / MCP)** sebagai alternatif modern dari SAP GUI / Eclipse ADT.
+Ekstensi untuk menghadirkan dukungan bahasa pemrograman **SAP-ABAP** di **[Zed Editor](https://zed.dev)**. Dirancang khusus untuk developer SAP yang menginginkan editor yang **super ringan, ultra responsif (berbasis Rust + GPU Acceleration), dan siap terintegrasi dengan AI Agent (Model Context Protocol / MCP)** sebagai alternatif modern dari SAP GUI / Eclipse ADT.
 
 ---
 
@@ -24,7 +23,7 @@ Ekstensi resmi komunitas untuk menghadirkan dukungan bahasa pemrograman **SAP AB
 ### Cara 1: Install dari Zed Extensions (Jika sudah dipublish)
 1. Buka Zed Editor.
 2. Tekan `Cmd + Shift + P` lalu ketik `zed: extensions`.
-3. Cari **ABAP** lalu klik **Install**.
+3. Cari **SAP-ABAP** lalu klik **Install**.
 
 ### Cara 2: Install via Local Development (Dev Extension)
 1. Clone repositori ini ke komputer Anda:
@@ -42,7 +41,7 @@ Ekstensi resmi komunitas untuk menghadirkan dukungan bahasa pemrograman **SAP AB
 
 ## 🚀 Workflow Harian yang Direkomendasikan (Daily Workflow)
 
-Pengembangan SAP ABAP modern menggunakan Zed memberikan kecepatan luar biasa dibandingkan Eclipse/SAP GUI:
+Pengembangan SAP-ABAP modern menggunakan Zed memberikan kecepatan luar biasa dibandingkan Eclipse/SAP GUI:
 
 ```mermaid
 flowchart LR
@@ -128,13 +127,13 @@ Jika Anda sudah menggunakan extension [ABAP Remote Filesystem](https://github.co
 ## 📁 Struktur File Ekstensi (Project Structure)
 
 ```text
-zed-abap/
+zed-sap-abap/
 ├── extension.toml              # Manifest metadata ekstensi Zed
 ├── grammars/
 │   └── abap.wasm               # Compiled Tree-sitter WebAssembly parser
 ├── languages/
 │   └── abap/
-│       ├── config.toml         # Konfigurasi bahasa & komentar
+│       ├── config.toml         # Konfigurasi bahasa (SAP-ABAP) & komentar
 │       ├── highlights.scm      # 1100+ baris aturan syntax highlighting
 │       ├── outline.scm         # Aturan navigasi struktur kode
 │       ├── brackets.scm        # Bracket matching rules
@@ -152,12 +151,8 @@ zed-abap/
 
 ---
 
-## 🤝 Kontribusi & Credits
+## 🤝 Credits
 
 - Tree-sitter grammar: [kennyhml/tree-sitter-abap](https://github.com/kennyhml/tree-sitter-abap)
 - MCP server: [mario-andreschak/mcp-abap-adt](https://github.com/mario-andreschak/mcp-abap-adt)
 - Inspirasi arsitektur: [ABAP Remote Filesystem (Marcello Urbani)](https://github.com/marcellourbani/vscode_abap_remote_fs)
-
-## 📝 Lisensi
-
-Distribusi di bawah lisensi [MIT](LICENSE). Bebas digunakan dan dikembangkan untuk komunitas ABAP.
