@@ -1,1 +1,6 @@
 .DS_Store
+# Generated parser files (too large for git, ~90MB)
+# Run `npx tree-sitter generate` in the tree-sitter-abap repo to regenerate
+grammars/abap/src/parser.c
+grammars/abap/src/grammar.json
+grammars/abap/src/node-types.json
