@@ -27,14 +27,14 @@ Comprehensive **SAP-ABAP** language support and debugging toolkit for the **[Zed
 
 1. Clone this repository to your local machine:
    ```bash
-   git clone git@github-personal:ghanda-syah/zed-ext-sap-abab.git
+   git clone git@github-personal:ghanda-syah/zed-ext-sap-abap.git
    ```
 2. Open **Zed Editor**.
 3. Press `Cmd + Shift + P` (macOS) or `Ctrl + Shift + P` (Linux) and type:
    ```text
    zed: install dev extension
    ```
-4. Select the `zed-ext-sap-abab` (or `zed-abap`) directory.
+4. Select the `zed-ext-sap-abap` (or `zed-abap`) directory.
 
 ### Method 2: From Zed Extension Registry (Once Published)
 
